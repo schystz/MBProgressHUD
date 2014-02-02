@@ -424,6 +424,13 @@ typedef void (^MBProgressHUDCompletionBlock)();
  */
 @property (assign, getter = isSquare) BOOL square;
 
+/**
+ * Only applicable if indicator is of type MBProgressHUDModeIndeterminate
+ * Sets the UIActivityIndicatorView's color
+ * Defaults to white [UIColor whiteColor]
+ */
+@property (nonatomic, MB_STRONG) UIColor *indicatorColor;
+
 @end
 
 

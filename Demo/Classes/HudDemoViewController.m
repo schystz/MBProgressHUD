@@ -219,15 +219,18 @@
 	[hud hide:YES afterDelay:3];
 }
 
-- (IBAction)showWithColor:(id)sender{
-	HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-	[self.navigationController.view addSubview:HUD];
+- (IBAction)showWithColor:(id)sender
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	HUD.labelText = @"Loading";
+	HUD.delegate = self;
 	
 	// Set the hud to display with a color
-	HUD.color = [UIColor colorWithRed:0.23 green:0.50 blue:0.82 alpha:0.90];
+	HUD.color = [UIColor whiteColor];
+	HUD.labelColor = HUD.indicatorColor = [UIColor blackColor];
 	
-	HUD.delegate = self;
-	[HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];	
+	[self.navigationController.view addSubview:HUD];
+	[HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
 }
 
 #pragma mark -

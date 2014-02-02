@@ -98,6 +98,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 @synthesize detailsLabelFont;
 @synthesize detailsLabelColor;
 @synthesize indicator;
+@synthesize indicatorColor;
 @synthesize xOffset;
 @synthesize yOffset;
 @synthesize minSize;
@@ -186,6 +187,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
         self.labelColor = [UIColor whiteColor];
 		self.detailsLabelFont = [UIFont boldSystemFontOfSize:kDetailsLabelFontSize];
         self.detailsLabelColor = [UIColor whiteColor];
+        self.indicatorColor = [UIColor whiteColor];
 		self.xOffset = 0.0f;
 		self.yOffset = 0.0f;
 		self.dimBackground = NO;
@@ -239,6 +241,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	[minShowTimer release];
 	[showStarted release];
 	[customView release];
+    [indicatorColor release];
 #if NS_BLOCKS_AVAILABLE
 	[completionBlock release];
 #endif
@@ -485,6 +488,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		self.indicator = MB_AUTORELEASE([[UIActivityIndicatorView alloc]
 										 initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge]);
 		[(UIActivityIndicatorView *)indicator startAnimating];
+        [(UIActivityIndicatorView *)indicator setColor:self.indicatorColor];
 		[self addSubview:indicator];
 	}
 	else if (mode == MBProgressHUDModeDeterminateHorizontalBar) {
@@ -670,7 +674,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (NSArray *)observableKeypaths {
 	return [NSArray arrayWithObjects:@"mode", @"customView", @"labelText", @"labelFont", @"labelColor",
-			@"detailsLabelText", @"detailsLabelFont", @"detailsLabelColor", @"progress", nil];
+			@"detailsLabelText", @"detailsLabelFont", @"detailsLabelColor", @"indicatorColor", @"progress", nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -696,6 +700,10 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		detailsLabel.font = self.detailsLabelFont;
 	} else if ([keyPath isEqualToString:@"detailsLabelColor"]) {
 		detailsLabel.textColor = self.detailsLabelColor;
+	} else if ([keyPath isEqualToString:@"indicatorColor"]) {
+		if ([indicator isKindOfClass:[UIActivityIndicatorView class]]) {
+            [(UIActivityIndicatorView *)indicator setColor:self.indicatorColor];
+        }
 	} else if ([keyPath isEqualToString:@"progress"]) {
 		if ([indicator respondsToSelector:@selector(setProgress:)]) {
 			[(id)indicator setValue:@(progress) forKey:@"progress"];
